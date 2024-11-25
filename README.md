@@ -1,4 +1,4 @@
-# SafeText
+# [SafeText](safetext.onrender.com)
 
 This is a live chat room application built using Python, Flask, and SocketIO. Users can create or join chat rooms, send real-time messages, and view message history.
 
