@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Create Room Section -->
+
+<div class="header">
+    <h1>Create a Room</h1>
+    <p>Enter your name and create a Room Name.</p>
+</div>
+
+<!-- Centered Form with Outer Box -->
+<div class="form-container">
+    {% if error %}
+        <div class="disclaimer">{{ error }}</div>
+    {% endif %}
+    
+    <form method="POST" action="{{ url_for('create_room_page') }}" class="form">
+        <!-- Name Input -->
+        <div class="form-group">
+            <label for="name" class="form-label">Name:</label>
+            <input 
+                type="text" 
+                id="name" 
+                class="form-input" 
+                placeholder="Enter Your Name" 
+                name="name" 
+                value="{{ name }}" 
+                required
+            >
+        </div>
+
+        <!-- Create Room Input -->
+        <div class="form-group">
+            <label for="create-room" class="form-label">Room Name:</label>
+            <input 
+                type="text" 
+                id="create-room" 
+                class="form-input" 
+                placeholder="Enter Room Name" 
+                name="create-room" 
+                required
+            >
+        </div>
+        
+        <!-- Submit Button -->
+        <div class="button-section">
+            <button type="submit" class="btn-primary" name="create" value="create">Generate Room</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="header">
+        <h1>Join a Room</h1>
+        <p>Enter your name and room code to join an existing chat room.</p>
+    </div>
+    
+    <!-- Centered Form with Outer Box -->
+    <div class="form-container">
+        {% if error %}
+            <div class="disclaimer">{{ error }}</div>
+        {% endif %}
+        
+        <form method="POST" action="{{ url_for('join_room_page') }}" class="form">
+            <!-- Name Input -->
+            <div class="form-group">
+                <label for="name" class="form-label">Name:</label>
+                <input 
+                    type="text" 
+                    id="name" 
+                    name="name" 
+                    class="form-input" 
+                    placeholder="Enter Your Name" 
+                    value="{{ name }}" 
+                    required
+                >
+            </div>
+            
+            <!-- Room Code Input -->
+            <div class="form-group">
+                <label for="code" class="form-label">Room Code:</label>
+                <input 
+                    type="text" 
+                    id="code" 
+                    name="code" 
+                    class="form-input" 
+                    placeholder="Enter Room Code" 
+                    value="{{ code }}" 
+                    required
+                >
+            </div>
+            
+            <!-- Submit Button -->
+            <button type="submit" class="btn-primary">Join Room</button>
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="header">
+    <h1>Chat Room</h1>
+    <p>Welcome to room: <strong>{{ room }}</strong></p>
+</div>
+
+<div class="form-container">
+    <h2 class="form-label">Chat Messages</h2>
+    
+    <!-- Message Display Section -->
+    <div class="messages" id="messages">
+        <!-- Messages will be dynamically added here -->
+    </div>
+    
+    <!-- Message Input Section -->
+    <div class="form-group">
+        <label for="message" class="form-label">Type Your Message:</label>
+        <div class="inputs">
+            <input 
+                type="text" 
+                id="message" 
+                class="form-input" 
+                placeholder="Enter your message here..."
+            >
+            <button 
+                type="button" 
+                class="btn-primary" 
+                id="send-btn" 
+                onclick="sendMessage()">
+                Send
+            </button>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var socketio = io()
+
+    const messages = document.getElementById("messages")
+
+    const creatMessage = (name, msg) => { // structure for a new message from users
+        const content = `
+        <div class="text">
+            <span>
+                <strong>${name}</strong>: ${msg}
+            </span>
+            <span class="muted">
+                ${new Date().toLocaleString()}
+            </span>
+        </div>
+        `
+        messages.innerHTML += content;
+    };
+    
+    socketio.on("message", (data) => { // listening for message event from flask
+        creatMessage(data.name, data.message) // creates and displays the message from user
+    });
+
+    const sendMessage = () => {
+        const message = document.getElementById("message")
+        if (message.value == "") return;
+        socketio.emit("message", { data: message.value })
+        message.value = ""
+    };
+</script>
+
+{% for msg in messages %}
+<script type="text/javascript">
+    createMessage("{{msg.name}}", "{{msg.message}}")
+</script>
+{% endfor %}
+{% endblock %}
