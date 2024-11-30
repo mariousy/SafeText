@@ -4,6 +4,7 @@ from flask_socketio import join_room, leave_room, send, SocketIO
 import random
 from string import ascii_uppercase
 import os
+import socket
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 templates_dir = os.path.join(basedir, 'templates')
@@ -12,6 +13,12 @@ static_dir = os.path.join(basedir, 'static')
 app=Flask(__name__, template_folder=templates_dir, static_folder=static_dir)
 app.config["SECRET_KEY"] =  "testing"
 socketio = SocketIO(app)
+
+#socketIO "listens" for actions (mainly sending/receiving messages)
+# from user, javascript "data" is created (the message)
+# data from JS is then sent to the app server
+# server then checks our functionality to see what action to perform (updates the template of each user in room)
+#app gives html pages certain socket/http capabilities, such as POST or GET
 
 rooms = {} #keep track of used room nums
 
@@ -116,6 +123,8 @@ def connect(auth):
     send({"name": name, "message": "Has entered the room"}, to=room)
     rooms[room]["members"] += 1 #keep track of members currently in room
     print(f"{name} has joined the room {room}") #for debugging: seeing if user joins correctly
+    userIP = request.remote_addr  # Get the user's IP address
+    print(f"User {name} IP: " + userIP)
 
 @socketio.on("disconnect")
 def disconnect():
@@ -127,8 +136,7 @@ def disconnect():
         rooms[room]["members"] -= 1
         if rooms[room]["members"] <= 0:
             del rooms[room] # delete room and its code if empty
-    send({"name": name, "message": "Has entered left room"}, to=room)
-    print(f"{name} has left the room {room}") #for debugging: seeing if user joins correctly
+    
 
 
 
@@ -136,4 +144,6 @@ import os
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
+    server_ip = socket.gethostbyname(socket.gethostname())
+    print(f"Server is running on IP: {server_ip}")
     socketio.run(app, host="0.0.0.0", port=port)
