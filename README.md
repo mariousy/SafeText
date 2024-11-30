@@ -1,4 +1,4 @@
-# Python Live Chat Application
+# [SafeText](https://safetext.onrender.com)
 
 This is a live chat room application built using Python, Flask, and SocketIO. Users can create or join chat rooms, send real-time messages, and view message history.
 
@@ -21,13 +21,13 @@ Before running the application, ensure that you have the following installed:
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/msalama2/Computer-Networks-2470-Project.git
+   git clone https://github.com/mariousy/SafeText.git
    ```
 
 2. **Navigate to the project directory:**
 
    ```bash
-   cd Computer-Networks-2470-Project
+   cd SafeText
    ```
 
 3. **Create a virtual environment (optional but recommended):**

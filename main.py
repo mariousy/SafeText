@@ -136,7 +136,8 @@ def disconnect():
         rooms[room]["members"] -= 1
         if rooms[room]["members"] <= 0:
             del rooms[room] # delete room and its code if empty
-    
+    send({"name": name, "message": "Has entered left room"}, to=room)
+    print(f"{name} has left the room {room}") #for debugging: seeing if user joins correctly
 
 
 
