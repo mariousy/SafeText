@@ -111,33 +111,34 @@ def message(data):
 
 @socketio.on("connect")
 def connect(auth):
-    room = session.get("room") # making sure they have a room and name
+    room = session.get("room")  # Making sure they have a room and name
     name = session.get("name")
     if not room or not name:
         return
-    if room not in rooms: # seeing if room does not exist
-        leave_room(room) # leaves if accidentally joined invalid room
+    if room not in rooms:  # Seeing if room does not exist
+        leave_room(room)  # Leaves if accidentally joined an invalid room
         return
 
-    join_room(room) #if room exists, join it
+    join_room(room)  # If room exists, join it
     send({"name": name, "message": "Has entered the room"}, to=room)
-    rooms[room]["members"] += 1 #keep track of members currently in room
-    print(f"{name} has joined the room {room}") #for debugging: seeing if user joins correctly
+    rooms[room]["members"] += 1  # Keep track of members currently in room
+    app.logger.info(f"{name} has joined the room {room}")  # Logging user joining the room
     userIP = request.remote_addr  # Get the user's IP address
-    print(f"User {name} IP: " + userIP)
+    app.logger.info(f"User {name} IP: {userIP}")  # Logging user's IP address
 
 @socketio.on("disconnect")
 def disconnect():
-    room = session.get("room") # making sure they have a room and name
+    room = session.get("room")  # Making sure they have a room and name
     name = session.get("name")
     leave_room(room)
 
     if room in rooms:
         rooms[room]["members"] -= 1
         if rooms[room]["members"] <= 0:
-            del rooms[room] # delete room and its code if empty
-    send({"name": name, "message": "Has entered left room"}, to=room)
-    print(f"{name} has left the room {room}") #for debugging: seeing if user joins correctly
+            del rooms[room]  # Delete room and its code if empty
+    send({"name": name, "message": "Has left the room"}, to=room)
+    app.logger.info(f"{name} has left the room {room}")  # Logging user leaving the room
+
 
 
 
