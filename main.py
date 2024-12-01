@@ -107,7 +107,8 @@ def message(data):
 
     send(content, to=room)
     rooms[room]["messages"].append(content)
-    print(f"{session.get('name')} said: {data['data']}")
+    app.logger.info(f"{session.get('name')} said: {data['data']} in room {room}")
+
 
 @socketio.on("connect")
 def connect(auth):
