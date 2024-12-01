@@ -141,10 +141,14 @@ def disconnect():
 
 
 
-import os
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     server_ip = socket.gethostbyname(socket.gethostname())
-    print(f"Server is running on IP: {server_ip}")
+    logger.info(f"Server is running on IP: {server_ip}")
     socketio.run(app, host="0.0.0.0", port=port)
+
